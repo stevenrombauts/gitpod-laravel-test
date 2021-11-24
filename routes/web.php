@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Mail;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,5 +15,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    Mail::raw('Test', function ($message)  {
+        $message->to('foo@bar.com')->subject(sprintf('An invitation from %s', 'Foo Bar'));
+    });
+
     return view('welcome');
 });

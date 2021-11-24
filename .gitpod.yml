@@ -13,16 +13,30 @@ ports:
     onOpen: notify
 
 tasks:
-  - init: >
+  - name: Application
+    init: >
       mysql -u root -e "create database example_app" &&
       cp .env.example .env &&
       sed -i "s|APP_URL=|APP_URL=${GITPOD_WORKSPACE_URL}|g" .env &&
-      sed -i "s|APP_URL=https://|APP_URL=https://8000-|g" .env &&
+      sed -i "s|APP_URL=https://|APP_URL=https://8080-|g" .env &&
+      sed -i "s|MAIL_HOST=|MAIL_HOST=127.0.0.1|g" .env &&
+      sed -i "s|MAIL_FROM_ADDRESS=|MAIL_HOST=foo@bar.com|g" .env &&
       composer install &&
       npm i &&
       php artisan key:generate
     command: >
       php artisan serve --port=8080
   # Start MailHog
-  - command: mailhog -api-bind-addr 127.0.0.1:8025 -ui-bind-addr 127.0.0.1:8025 -smtp-bind-addr 127.0.0.1:1025
+  - name: MailHog
+    command: mailhog -api-bind-addr 127.0.0.1:8025 -ui-bind-addr 127.0.0.1:8025 -smtp-bind-addr 127.0.0.1:1025
+  # Start PhpMyAdmin
+  - name: PhpMyAdmin
+    init: > 
+      mkdir /home/gitpod/phpmyadmin
+      composer create-project phpmyadmin/phpmyadmin /home/gitpod/phpmyadmin && 
+      cp ${GITPOD_REPO_ROOT}/.gitpod/phpmyadmin.config.inc.php /home/gitpod/phpmyadmin/config.inc.php
+    command: php -S localhost:8083 -t /home/gitpod/phpmyadmin/
+  # Open blank terminal
+  - name: Terminal
+    command: /bin/bash
     
