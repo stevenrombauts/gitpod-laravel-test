@@ -15,6 +15,9 @@ declare(strict_types=1);
  */
 $cfg['blowfish_secret'] = ''; /* YOU MUST FILL IN THIS FOR COOKIE AUTH! */
 
+// Required to work with Simple Browsing on GitPod
+$cfg['AllowThirdPartyFraming'] = true;
+
 /**
  * Servers configuration
  */
