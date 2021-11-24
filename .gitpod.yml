@@ -11,6 +11,9 @@ ports:
   # Mailhog UI
   - port: 8025
     onOpen: notify
+  # PhpMyAdmin
+  - port: 8083
+    onOpen: notify
 
 tasks:
   - name: Application
@@ -25,6 +28,8 @@ tasks:
       npm i &&
       php artisan key:generate
     command: >
+      (echo "GITPOD_PHPMYADMIN_URL=$(gp url 8083)" | tee -a .env) &&
+      (echo "GITPOD_MAILHOG_URL=$(gp url 8025)" | tee -a .env) &&
       php artisan serve --port=8080
   # Start MailHog
   - name: MailHog
@@ -32,7 +37,7 @@ tasks:
   # Start PhpMyAdmin
   - name: PhpMyAdmin
     init: > 
-      mkdir /home/gitpod/phpmyadmin
+      mkdir /home/gitpod/phpmyadmin &&
       composer create-project phpmyadmin/phpmyadmin /home/gitpod/phpmyadmin && 
       cp ${GITPOD_REPO_ROOT}/.gitpod/phpmyadmin.config.inc.php /home/gitpod/phpmyadmin/config.inc.php
     command: php -S localhost:8083 -t /home/gitpod/phpmyadmin/
