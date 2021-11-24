@@ -3,11 +3,14 @@ image:
 
 ports:
   # Laravel server
-  - port: 8000
+  - port: 8080
     onOpen: open-preview
   # MySQL server
   - port: 3306
     onOpen: ignore
+  # Mailhog UI
+  - port: 8025
+    onOpen: notify
 
 tasks:
   - init: >
@@ -19,5 +22,7 @@ tasks:
       npm i &&
       php artisan key:generate
     command: >
-      php -S 0.0.0.0:8000 -t public
+      php artisan serve --port=8080
+  # Start MailHog
+  - command: mailhog -api-bind-addr 127.0.0.1:8025 -ui-bind-addr 127.0.0.1:8025 -smtp-bind-addr 127.0.0.1:1025
     
