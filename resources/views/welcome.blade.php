@@ -116,8 +116,12 @@
                                 <path d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
                             </svg>
 
-                            <a href="https://github.com/sponsors/taylorotwell" class="ml-1 underline">
-                                Sponsor
+                            <a href="{{ env('GITPOD_MAILHOG_URL', 'http://localhost:8025') }}" class="ml-1 underline">
+                                MailHog
+                            </a>
+                            
+                            <a href="{{ env('GITPOD_PHPMYADMIN_URL', 'http://localhost:8083') }}" class="ml-1 underline">
+                                MailHog
                             </a>
                         </div>
                     </div>
